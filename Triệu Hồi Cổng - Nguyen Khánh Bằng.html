@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Triệu Hồi Cổng - Nguyen Khánh Bằng</title>
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#6ee7b7;
+      --glass: rgba(255,255,255,0.04);
+      --glass2: rgba(255,255,255,0.02);
+    }
+    html,body{height:100%; margin:0; font-family:Inter, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+    body{
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(110,231,183,0.06), transparent 10%),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(99,102,241,0.04), transparent 10%),
+                  var(--bg);
+      color:#e6eef8;
+      display:flex; align-items:center; justify-content:center;
+      padding:32px;
+    }
+
+    .stage{
+      width:100%; max-width:980px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px; padding:28px; box-shadow: 0 8px 30px rgba(2,6,23,0.7);
+      border: 1px solid rgba(255,255,255,0.03);
+      display:grid; grid-template-columns: 1fr 360px; gap:20px;
+      align-items:start;
+    }
+
+    .left{
+      padding:18px; border-radius:12px; background:linear-gradient(180deg, var(--glass), var(--glass2));
+      min-height:360px;
+    }
+
+    h1{margin:0 0 8px 0; font-size:20px; letter-spacing:0.3px}
+    p.lead{margin:6px 0 18px 0; color:#cde7d9}
+
+    .controls{display:flex; gap:12px; flex-wrap:wrap}
+    .btn{
+      background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.05);
+      padding:12px 16px; border-radius:10px; cursor:pointer; font-weight:600;
+      transition:transform .18s ease, box-shadow .18s;
+      user-select:none;
+    }
+    .btn:active{transform:translateY(1px) scale(.995)}
+    .btn.primary{box-shadow:0 6px 18px rgba(110,231,183,0.06); color:#052f20}
+    .btn.warn{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); color:#ffd8a8}
+
+    .portal-area{
+      margin-top:20px; display:flex; gap:18px; align-items:flex-end; min-height:180px;
+      position:relative;
+    }
+    .portal{
+      width:180px; height:220px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03); display:flex; align-items:center; justify-content:center;
+      position:relative; overflow:visible;
+    }
+    .ring{
+      width:140px; height:140px; border-radius:50%; background:conic-gradient(from 90deg, rgba(110,231,183,0.06), rgba(99,102,241,0.06));
+      display:flex; align-items:center; justify-content:center; position:relative; transition:all .5s ease;
+      box-shadow:0 8px 30px rgba(99,102,241,0.05), inset 0 -8px 30px rgba(0,0,0,0.4);
+    }
+    .portal.open .ring{ transform: scale(1.12) rotate(8deg); box-shadow:0 18px 40px rgba(99,102,241,0.12); }
+    .portal .vortex{
+      width:100px; height:100px; border-radius:50%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.06), transparent 15%), linear-gradient(180deg, rgba(30,58,138,0.8), rgba(5,16,54,0.9));
+      display:flex; align-items:center; justify-content:center; color:#fff; font-size:38px;
+      transform: rotate(0deg);
+      transition:transform .9s linear;
+    }
+    .portal.open .vortex{ transform: rotate(720deg) scale(1.08); }
+
+    /* animal */
+    .animal{
+      position:absolute; bottom:10px; left:50%; transform:translateX(-50%) translateY(30px); text-align:center;
+      opacity:0; transition:all .6s cubic-bezier(.2,.9,.25,1);
+      pointer-events:none;
+    }
+    .portal.open .animal{ opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+
+    .speech{
+      margin-top:8px; font-size:13px; background:rgba(255,255,255,0.03); border-radius:8px; padding:8px 10px;
+      display:inline-block; max-width:220px;
+    }
+
+    /* right panel */
+    .right{
+      padding:18px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
+    }
+    .people{display:flex; gap:10px; align-items:center; margin-bottom:12px;}
+    .avatar{
+      width:52px; height:52px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--accent);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .person-meta{font-size:14px}
+    footer{margin-top:18px; font-size:13px; color:#9fb8a9}
+    .note{font-size:13px; color:#adcbb9; margin-top:8px}
+
+    /* small */
+    @media (max-width:880px){
+      .stage{grid-template-columns:1fr; padding:18px}
+      .portal-area{justify-content:center}
+      .right{order:2}
+    }
+  </style>
+</head>
+<body>
+  <div class="stage" role="application" aria-label="Triệu hồi cổng">
+    <div class="left">
+      <h1>Nguyễn Khánh Bằng mong cho Lê Duy Đức &amp; Trịnh Ngọc Hưng hoạt ngôn hơn</h1>
+      <p class="lead">Hãy triệu hồi 2 cổng để gặp penguins và kangaroos — quan sát cuộc trò chuyện kỳ lạ giữa các sinh vật và bạn bè!</p>
+
+      <div class="controls" aria-hidden="false">
+        <button id="summonPeng" class="btn primary" aria-pressed="false">🔮 Triệu hồi cổng Penguins</button>
+        <button id="summonKang" class="btn warn" aria-pressed="false">🌀 Triệu hồi cổng Kangaroos</button>
+        <button id="resetBtn" class="btn" title="Đặt lại">♻️ Đặt lại</button>
+      </div>
+
+      <div class="portal-area" aria-live="polite">
+        <div id="portalPeng" class="portal" aria-label="Cổng Penguins">
+          <div class="ring">
+            <div class="vortex">❄️</div>
+          </div>
+          <div class="animal" id="pengAnim">
+            <div style="font-size:40px">🐧</div>
+            <div class="speech" id="pengSpeech">Ciao! Chúng mình thích tán gẫu — cố gắng nghe Đức kể chuyện đi!</div>
+          </div>
+        </div>
+
+        <div id="portalKang" class="portal" aria-label="Cổng Kangaroos">
+          <div class="ring">
+            <div class="vortex">🌾</div>
+          </div>
+          <div class="animal" id="kangAnim">
+            <div style="font-size:40px">🦘</div>
+            <div class="speech" id="kangSpeech">G'day! Nhảy vào cuộc nói chuyện nhé, Hưng — kể một chuyện vui!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">Tip: bấm nút để mở cổng — bấm lại để đóng. Sau khi mở, penguin và kangaroo sẽ "nói" vài câu khích lệ.</div>
+    </div>
+
+    <aside class="right" aria-label="Thông tin nhân vật">
+      <div class="people">
+        <div class="avatar">NB</div>
+        <div class="person-meta"><strong>Nguyễn Khánh Bằng</strong><div style="font-size:13px;color:#9fb8a9">Nguyện ước: bạn bè hoạt ngôn</div></div>
+      </div>
+
+      <div class="people">
+        <div class="avatar">LD</div>
+        <div class="person-meta"><strong>Lê Duy Đức</strong><div style="font-size:13px;color:#9fb8a9">Người được triệu hồi</div></div>
+      </div>
+
+      <div class="people">
+        <div class="avatar">TNH</div>
+        <div class="person-meta"><strong>Trịnh Ngọc Hưng</strong><div style="font-size:13px;color:#9fb8a9">Người được triệu hồi</div></div>
+      </div>
+
+      <hr style="border:none;height:1px;background:rgba(255,255,255,0.03);margin:14px 0">
+      <div>
+        <strong>Hoạt cảnh</strong>
+        <p style="margin:8px 0 0;color:#bcdac8;font-size:14px">Mỗi lần mở cổng, sinh vật sẽ xuất hiện và nói một câu khích lệ ngẫu nhiên để giúp hai bạn hoạt ngôn hơn — bạn cũng có thể reset để thử lại.</p>
+      </div>
+
+      <footer>Made with ✨ by your assistant • Trang demo vui vẻ</footer>
+    </aside>
+  </div>
+
+  <script>
+    // Data: dòng thoại khích lệ ngẫu nhiên
+    const pengLines = [
+      "Đức ơi, kể một chuyện hài hước đi — chúng tớ hứa cười lớn!",
+      "Một câu mở đầu: 'Hôm nay mình thấy một chiếc mũ biết hát...' ?",
+      "Thử hỏi Đức: 'Nếu có siêu năng lực, bạn sẽ chọn gì?'",
+      "Nghe kỹ: câu chuyện nhỏ có thể mở đầu cho cuộc trò chuyện lớn."
+    ];
+    const kangLines = [
+      "Hưng, kể một kỷ niệm ngắn vui đi — mọi người sẽ thích!",
+      "Nhảy vào tâm sự: 'Ngày đó mình...' rồi tiếp tục thôi.",
+      "Một lời khích: 'Bạn có biết điều kỳ quặc nhất bạn từng làm không?'",
+      "Bắt đầu bằng câu hỏi dễ: 'Bạn thích ăn gì nhất?'"
+    ];
+
+    // elements
+    const portalPeng = document.getElementById('portalPeng');
+    const portalKang = document.getElementById('portalKang');
+    const pengAnim = document.getElementById('pengAnim');
+    const kangAnim = document.getElementById('kangAnim');
+    const pengSpeech = document.getElementById('pengSpeech');
+    const kangSpeech = document.getElementById('kangSpeech');
+    const summonPeng = document.getElementById('summonPeng');
+    const summonKang = document.getElementById('summonKang');
+    const resetBtn = document.getElementById('resetBtn');
+
+    function randomPick(arr){
+      return arr[Math.floor(Math.random()*arr.length)];
+    }
+
+    function togglePortal(portalElem, animElem, speechElem, pool){
+      const isOpen = portalElem.classList.contains('open');
+      if(isOpen){
+        portalElem.classList.remove('open');
+        portalElem.querySelector('.vortex').textContent = portalElem === portalPeng ? "❄️" : "🌾";
+        portalElem.setAttribute('aria-expanded','false');
+        // fade out handled by CSS
+      } else {
+        portalElem.classList.add('open');
+        portalElem.querySelector('.vortex').textContent = "✨";
+        portalElem.setAttribute('aria-expanded','true');
+        // set random speech
+        speechElem.textContent = randomPick(pool);
+        // small soundless "pop" visual via transform
+        animElem.animate([{transform:'translateY(20px) scale(.98)', opacity:0},{transform:'translateY(0) scale(1)', opacity:1}], {duration:420, easing:'cubic-bezier(.2,.9,.25,1)'});
+      }
+    }
+
+    summonPeng.addEventListener('click', () => {
+      togglePortal(portalPeng, pengAnim, pengSpeech, pengLines);
+      summonPeng.setAttribute('aria-pressed', String(portalPeng.classList.contains('open')));
+    });
+
+    summonKang.addEventListener('click', () => {
+      togglePortal(portalKang, kangAnim, kangSpeech, kangLines);
+      summonKang.setAttribute('aria-pressed', String(portalKang.classList.contains('open')));
+    });
+
+    resetBtn.addEventListener('click', () => {
+      portalPeng.classList.remove('open');
+      portalKang.classList.remove('open');
+      pengSpeech.textContent = "Ciao! Chúng mình thích tán gẫu — cố gắng nghe Đức kể chuyện đi!";
+      kangSpeech.textContent = "G'day! Nhảy vào cuộc nói chuyện nhé, Hưng — kể một chuyện vui!";
+      summonPeng.setAttribute('aria-pressed','false');
+      summonKang.setAttribute('aria-pressed','false');
+      // subtle flash
+      document.querySelector('.stage').animate([{opacity:.96},{opacity:1}],{duration:280});
+    });
+
+    // accessibility: keyboard shortcuts
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === '1') summonPeng.click();
+      if(e.key === '2') summonKang.click();
+      if(e.key === '0') resetBtn.click();
+    });
+
+    // small auto-hint pulse
+    setTimeout(()=> {
+      summonPeng.animate([{transform:'scale(1)'},{transform:'scale(1.04)'}],{duration:900, direction:'alternate', iterations:2});
+      summonKang.animate([{transform:'scale(1)'},{transform:'scale(1.04)'}],{duration:900, direction:'alternate', iterations:2});
+    },900);
+  </script>
+</body>
+</html>
